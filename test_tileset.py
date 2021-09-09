@@ -11,9 +11,10 @@ class TestTile(TestCase):
         self.assertNotEqual(Tile(1, 2, 3), Tile(4, 5, 6))
 
     def test_tile_hashable(self):
-        t1 = Tile(1,2,3)
-        t2 = Tile(1,2,3)
+        t1 = Tile(1, 2, 3)
+        t2 = Tile(1, 2, 3)
         self.assertEqual(hash(t1), hash(t2))
+
 
 class TestTileSet(TestCase):
     @mock.patch("tileset.TileSet.add")
