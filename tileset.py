@@ -32,10 +32,10 @@ class TileSet:
 
     def add(self, tile):
         """Add tile in tileset"""
-        self.tileset.add(tile)
-
-        if tile.z >= self.maxzoom:
+        if tile.z > self.maxzoom:
             return
+
+        self.tileset.add(tile)
 
         for child in tile.children():
             self.add(child)
