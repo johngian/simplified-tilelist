@@ -34,7 +34,7 @@ class TileSet:
         """Add tile in tileset"""
         self.tileset.add(tile)
 
-        if tile.z == self.maxzoom:
+        if tile.z >= self.maxzoom:
             return
 
         for child in tile.children():
