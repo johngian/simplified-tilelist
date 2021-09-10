@@ -3,7 +3,7 @@ import argparse
 from tileset import TileSet
 
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser(
         description="Given a tile list as input, generate a distinct "
         "list of map tiles consisted of all the parent and children tiles "

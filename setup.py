@@ -13,5 +13,8 @@ setup(
     ],
     package_dir={"": "src"},
     packages=find_packages(where="src"),
-    python_requires=">=3.7"
+    python_requires=">=3.7",
+    entry_points={
+        "console_scripts": ["maps-simplified-tilelist=tileset.cli:main"],
+    },
 )
