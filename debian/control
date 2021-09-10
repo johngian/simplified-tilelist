@@ -1,0 +1,11 @@
+Source: maps-simplified-tilelist
+Section: python
+Priority: optional
+Maintainer: Yiannis Giannelos <jgiannelos@wikimedia.org>
+Build-Depends: debhelper-compat (= 12), dh-python, python3-setuptools, python3-all
+Standards-Version: 4.4.1
+
+Package: python3-maps-simplified-tilelist
+Architecture: all
+Depends: ${python3:Depends}, ${misc:Depends}
+Description: Generate a simplified maps tile list (Python 3)
