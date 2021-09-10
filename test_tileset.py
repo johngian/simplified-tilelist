@@ -17,8 +17,9 @@ class TestTile(TestCase):
 
 
 class TestTileSet(TestCase):
-    @mock.patch("tileset.TileSet.add")
-    def test_tileset_read(self, mock_add):
+    @mock.patch("tileset.TileSet.addChildren")
+    @mock.patch("tileset.TileSet.addParent")
+    def test_tileset_read(self, mock_addParent, mock_addChildren):
         test_input = ["15/5/5", "15/12/12"]
         test_input_file = "\n".join(test_input)
 
@@ -27,8 +28,27 @@ class TestTileSet(TestCase):
             tileset = TileSet("/path/to/tilelist", 15)
             tileset.read()
 
-        call_list = [mock.call(Tile(15, 5, 5)), mock.call(Tile(15, 12, 12))]
-        mock_add.assert_has_calls(call_list)
+        parent_list = [mock.call(Tile(14, 2, 2)), mock.call(Tile(14, 6, 6))]
+        mock_addParent.assert_has_calls(parent_list)
+        children_list = [
+            mock.call(
+                [
+                    Tile(z=16, x=10, y=10),
+                    Tile(z=16, x=11, y=10),
+                    Tile(z=16, x=10, y=11),
+                    Tile(z=16, x=11, y=11),
+                ]
+            ),
+            mock.call(
+                [
+                    Tile(z=16, x=24, y=24),
+                    Tile(z=16, x=25, y=24),
+                    Tile(z=16, x=24, y=25),
+                    Tile(z=16, x=25, y=25),
+                ]
+            ),
+        ]
+        mock_addChildren.assert_has_calls(children_list)
 
     def test_parse_entry(self):
         entry = "4/15/100"
@@ -40,7 +60,7 @@ class TestTileSet(TestCase):
         parsed = TileSet.parse(entry)
         self.assertEqual(parsed, Tile(4, 15, 100))
 
-    def test_tileset_add_single(self):
+    def test_tileset_add_single_minzoom(self):
         test_input = ["0/0/0"]
         test_input_file = "\n".join(test_input)
 
@@ -50,7 +70,7 @@ class TestTileSet(TestCase):
             tileset.read()
         self.assertEqual(len(tileset.tileset), 5)
 
-    def test_tileset_add_multiple(self):
+    def test_tileset_add_multiple_minzoom(self):
         test_input = ["0/0/0", "0/1/1"]
         test_input_file = "\n".join(test_input)
 
@@ -60,12 +80,72 @@ class TestTileSet(TestCase):
             tileset.read()
         self.assertEqual(len(tileset.tileset), 10)
 
-    def test_tileset_add_multiple_overlapping(self):
+    def test_tileset_add_multiple_overlapping_minzoom(self):
         test_input = ["0/0/0", "1/0/0"]
         test_input_file = "\n".join(test_input)
 
         mock_open = mock.mock_open(read_data=test_input_file)
         with mock.patch("builtins.open", mock_open):
             tileset = TileSet("/path/to/tilelist", 1)
+            tileset.read()
+        self.assertEqual(len(tileset.tileset), 5)
+
+    def test_tileset_add_single_z_between_maxzoom(self):
+        test_input = ["2/0/0"]
+        test_input_file = "\n".join(test_input)
+
+        mock_open = mock.mock_open(read_data=test_input_file)
+        with mock.patch("builtins.open", mock_open):
+            tileset = TileSet("/path/to/tilelist", 3)
+            tileset.read()
+        self.assertEqual(len(tileset.tileset), 7)
+
+    def test_tileset_add_multiple_z_between_maxzoom(self):
+        test_input = ["2/0/0", "2/10/10"]
+        test_input_file = "\n".join(test_input)
+
+        mock_open = mock.mock_open(read_data=test_input_file)
+        with mock.patch("builtins.open", mock_open):
+            tileset = TileSet("/path/to/tilelist", 3)
+            tileset.read()
+        self.assertEqual(len(tileset.tileset), 14)
+
+    def test_tileset_add_multiple_overlapping_z_between_maxzoom(self):
+        test_input = ["2/0/0", "3/0/0"]
+        test_input_file = "\n".join(test_input)
+
+        mock_open = mock.mock_open(read_data=test_input_file)
+        with mock.patch("builtins.open", mock_open):
+            tileset = TileSet("/path/to/tilelist", 3)
+            tileset.read()
+        self.assertEqual(len(tileset.tileset), 7)
+
+    def test_tileset_add_single_maxzoom(self):
+        test_input = ["3/0/0"]
+        test_input_file = "\n".join(test_input)
+
+        mock_open = mock.mock_open(read_data=test_input_file)
+        with mock.patch("builtins.open", mock_open):
+            tileset = TileSet("/path/to/tilelist", 3)
+            tileset.read()
+        self.assertEqual(len(tileset.tileset), 4)
+
+    def test_tileset_add_multiple_maxzoom(self):
+        test_input = ["3/0/0", "3/10/10"]
+        test_input_file = "\n".join(test_input)
+
+        mock_open = mock.mock_open(read_data=test_input_file)
+        with mock.patch("builtins.open", mock_open):
+            tileset = TileSet("/path/to/tilelist", 3)
+            tileset.read()
+        self.assertEqual(len(tileset.tileset), 8)
+
+    def test_tileset_add_multiple_overlapping_maxzoom(self):
+        test_input = ["3/0/0", "3/1/1"]
+        test_input_file = "\n".join(test_input)
+
+        mock_open = mock.mock_open(read_data=test_input_file)
+        with mock.patch("builtins.open", mock_open):
+            tileset = TileSet("/path/to/tilelist", 3)
             tileset.read()
         self.assertEqual(len(tileset.tileset), 5)
