@@ -1,4 +1,4 @@
-# Simplified map tilelist
+# Deduped map tilelist
 
 Given an input file with a list of line seperated tiles in `{zoom}/{x}/{y}` format, generate a distinct list of map tiles for all zoom levels up to `maxzoom`.
 
@@ -19,7 +19,7 @@ optional arguments:
 
 ## Context
 
-This CLI tool is built as a way to generate a simplified tile list of distinct tiles based on the `imposm3` expired tile output. The reason behind is this is to deduplicate tiles and optimize tile pregeneration by avoiding generating the same tile multiple times.
+This CLI tool is built as a way to generate a deduplicated tile list of distinct tiles based on the `imposm3` expired tile output. The reason behind this is to deduplicate tiles and optimize tile pregeneration by avoiding generating the same tile multiple times.
 
 ## Dependencies
 

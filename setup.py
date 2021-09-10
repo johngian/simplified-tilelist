@@ -1,7 +1,7 @@
 from setuptools import find_packages, setup
 
 setup(
-    name="maps-simplified-tilelist",
+    name="maps-deduped-tilelist",
     version="0.0.1",
     author="Yiannis Giannelos",
     author_email="jgiannelos@wikimedia.org",
@@ -15,6 +15,6 @@ setup(
     packages=find_packages(where="src"),
     python_requires=">=3.7",
     entry_points={
-        "console_scripts": ["maps-simplified-tilelist=tileset.cli:main"],
+        "console_scripts": ["maps-deduped-tilelist=tileset.cli:main"],
     },
 )

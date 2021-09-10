@@ -1,11 +1,14 @@
-Source: maps-simplified-tilelist
+Source: maps-deduped-tilelist
 Section: science
 Priority: optional
 Maintainer: Yiannis Giannelos <jgiannelos@wikimedia.org>
 Build-Depends: debhelper-compat (= 12), dh-python, python3-setuptools, python3-all
 Standards-Version: 4.4.1
 
-Package: python3-maps-simplified-tilelist
+Package: python3-maps-deduped-tilelist
 Architecture: all
 Depends: ${python3:Depends}, ${misc:Depends}
-Description: Generate a simplified maps tile list (Python 3)
+Description: Generate a deduplicated maps tile list for all tiles up to a zoom level (Python 3)
+  Given a list of map tiles as input, generate an extensive list of all
+  their parent and children tiles (up to a zoom level) and deduplicate
+  common entries.
