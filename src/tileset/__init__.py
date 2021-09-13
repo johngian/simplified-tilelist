@@ -25,10 +25,11 @@ class Tile:
 
 
 class TileSet:
-    def __init__(self, tilelistPath, maxzoom):
+    def __init__(self, tilelistPath, minzoom, maxzoom):
         self.tilelistPath = tilelistPath
         self.tileset = set()
         self.maxzoom = maxzoom
+        self.minzoom = minzoom
 
     @staticmethod
     def parse(entry):
@@ -39,7 +40,7 @@ class TileSet:
 
     def addParent(self, tile):
         """Add parent tile in the tileset"""
-        if tile.z < 0 or tile in self.tileset:
+        if tile.z < self.minzoom or tile in self.tileset:
             return
 
         self.tileset.add(tile)

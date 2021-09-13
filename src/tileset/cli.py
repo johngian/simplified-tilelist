@@ -13,11 +13,17 @@ def main():
         "tilelist_path", help="Path to the tilelist input file.", type=str
     )
     parser.add_argument(
-        "maxzoom", help="The maxzoom of the generated tilelist.", type=int
+        "maxzoom", help="The maximum zoom level of the generated tilelist.", type=int
+    )
+    parser.add_argument(
+        "minzoom",
+        default=0,
+        help="The minimum zoom level of the generated tilelist.",
+        type=int,
     )
     args = parser.parse_args()
 
-    ts = TileSet(args.tilelist_path, args.maxzoom)
+    ts = TileSet(args.tilelist_path, args.minzoom, args.maxzoom)
     ts.read()
 
     for tile in ts.tileset:

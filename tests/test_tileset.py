@@ -25,7 +25,7 @@ class TestTileSet(TestCase):
 
         mock_open = mock.mock_open(read_data=test_input_file)
         with mock.patch("builtins.open", mock_open):
-            tileset = TileSet("/path/to/tilelist", 15)
+            tileset = TileSet("/path/to/tilelist", 0, 15)
             tileset.read()
 
         parent_list = [mock.call(Tile(14, 2, 2)), mock.call(Tile(14, 6, 6))]
@@ -66,7 +66,7 @@ class TestTileSet(TestCase):
 
         mock_open = mock.mock_open(read_data=test_input_file)
         with mock.patch("builtins.open", mock_open):
-            tileset = TileSet("/path/to/tilelist", 1)
+            tileset = TileSet("/path/to/tilelist", 0, 1)
             tileset.read()
         self.assertEqual(len(tileset.tileset), 5)
 
@@ -76,7 +76,7 @@ class TestTileSet(TestCase):
 
         mock_open = mock.mock_open(read_data=test_input_file)
         with mock.patch("builtins.open", mock_open):
-            tileset = TileSet("/path/to/tilelist", 1)
+            tileset = TileSet("/path/to/tilelist", 0, 1)
             tileset.read()
         self.assertEqual(len(tileset.tileset), 10)
 
@@ -86,7 +86,7 @@ class TestTileSet(TestCase):
 
         mock_open = mock.mock_open(read_data=test_input_file)
         with mock.patch("builtins.open", mock_open):
-            tileset = TileSet("/path/to/tilelist", 1)
+            tileset = TileSet("/path/to/tilelist", 0, 1)
             tileset.read()
         self.assertEqual(len(tileset.tileset), 5)
 
@@ -96,7 +96,7 @@ class TestTileSet(TestCase):
 
         mock_open = mock.mock_open(read_data=test_input_file)
         with mock.patch("builtins.open", mock_open):
-            tileset = TileSet("/path/to/tilelist", 3)
+            tileset = TileSet("/path/to/tilelist", 0, 3)
             tileset.read()
         self.assertEqual(len(tileset.tileset), 7)
 
@@ -106,7 +106,7 @@ class TestTileSet(TestCase):
 
         mock_open = mock.mock_open(read_data=test_input_file)
         with mock.patch("builtins.open", mock_open):
-            tileset = TileSet("/path/to/tilelist", 3)
+            tileset = TileSet("/path/to/tilelist", 0, 3)
             tileset.read()
         self.assertEqual(len(tileset.tileset), 14)
 
@@ -116,7 +116,7 @@ class TestTileSet(TestCase):
 
         mock_open = mock.mock_open(read_data=test_input_file)
         with mock.patch("builtins.open", mock_open):
-            tileset = TileSet("/path/to/tilelist", 3)
+            tileset = TileSet("/path/to/tilelist", 0, 3)
             tileset.read()
         self.assertEqual(len(tileset.tileset), 7)
 
@@ -126,7 +126,7 @@ class TestTileSet(TestCase):
 
         mock_open = mock.mock_open(read_data=test_input_file)
         with mock.patch("builtins.open", mock_open):
-            tileset = TileSet("/path/to/tilelist", 3)
+            tileset = TileSet("/path/to/tilelist", 0, 3)
             tileset.read()
         self.assertEqual(len(tileset.tileset), 4)
 
@@ -136,7 +136,7 @@ class TestTileSet(TestCase):
 
         mock_open = mock.mock_open(read_data=test_input_file)
         with mock.patch("builtins.open", mock_open):
-            tileset = TileSet("/path/to/tilelist", 3)
+            tileset = TileSet("/path/to/tilelist", 0, 3)
             tileset.read()
         self.assertEqual(len(tileset.tileset), 8)
 
@@ -146,6 +146,6 @@ class TestTileSet(TestCase):
 
         mock_open = mock.mock_open(read_data=test_input_file)
         with mock.patch("builtins.open", mock_open):
-            tileset = TileSet("/path/to/tilelist", 3)
+            tileset = TileSet("/path/to/tilelist", 0, 3)
             tileset.read()
         self.assertEqual(len(tileset.tileset), 5)
