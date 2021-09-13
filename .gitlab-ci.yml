@@ -1,0 +1,40 @@
+stages:
+  - lint
+  - test
+  - package
+
+lint:
+  stage: lint
+  image: python:latest
+  before_script:
+    - pip install flake8
+  script:
+    - flake8 .
+
+test:
+  stage: test
+  image: python:latest
+  script:
+    - pip install .
+    - python -m unittest discover -v
+
+build_python:
+  stage: package
+  image: python:latest
+  script:
+    - python setup.py sdist
+  artifacts:
+    paths:
+      - dist/maps-deduped-tilelist*.tar.gz
+
+build_debian:
+  stage: package
+  image: debian:stable
+  script:
+    - apt-get update
+    - apt-get -y install python3-all python3-setuptools dh-make dh-python
+    - dpkg-buildpackage -b -us -uc
+    - cp ../python3-maps-deduped-tilelist*.deb .
+  artifacts:
+    paths:
+      - python3-maps-deduped-tilelist*.deb
