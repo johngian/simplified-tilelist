@@ -2,6 +2,7 @@ stages:
   - lint
   - test
   - package
+  - release
 
 lint:
   stage: lint
@@ -23,9 +24,10 @@ build_python:
   image: python:latest
   script:
     - python setup.py sdist
+    - cp dist/maps-deduped-tilelist*.tar.gz .
   artifacts:
     paths:
-      - dist/maps-deduped-tilelist*.tar.gz
+      - maps-deduped-tilelist*.tar.gz
 
 build_debian:
   stage: package
@@ -38,3 +40,54 @@ build_debian:
   artifacts:
     paths:
       - python3-maps-deduped-tilelist*.deb
+
+publish_debian_package:
+  rules:
+    - if: $CI_COMMIT_TAG
+  stage: release
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  script:
+    - echo "Ensure debian artifacts don't expire for $CI_COMMIT_TAG"
+  needs:
+    - job: build_debian
+      artifacts: true
+  artifacts:
+    paths:
+      - python3-maps-deduped-tilelist*.deb
+    expire_in: never
+
+publish_python_package:
+  rules:
+    - if: $CI_COMMIT_TAG
+  stage: release
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  script:
+    - echo "Ensure python artifacts don't expire for $CI_COMMIT_TAG"
+  needs:
+    - job: build_python
+      artifacts: true
+  artifacts:
+    paths:
+      - maps-deduped-tilelist*.tar.gz
+    expire_in: never
+
+release:
+  rules:
+    - if: $CI_COMMIT_TAG
+  stage: release
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  needs:
+    - job: release_artifacts
+  script:
+    - echo 'Create a new release for $CI_COMMIT_TAG'
+  release:
+    tag_name: "$CI_COMMIT_TAG"
+    description: "$CI_COMMIT_TAG"
+    assets:
+      links:
+        - name: Debian package
+          url: "$CI_API_V4_URL/projects/$CI_PROJECT_ID/jobs/artifacts/$CI_COMMIT_TAG/download?job=publish_debian_package"
+          link_type: package
+        - name: Python package
+          url: "$CI_API_V4_URL/projects/$CI_PROJECT_ID/jobs/artifacts/$CI_COMMIT_TAG/download?job=publish_python_package"
+          link_type: package
